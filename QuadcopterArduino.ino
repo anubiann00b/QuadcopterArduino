@@ -20,23 +20,18 @@ float q[4]; //hold q values
 FreeSixIMU my3IMU = FreeSixIMU();
 
 //Define Variables we'll be connecting to
-double rollSet, rollIn, rollOut;
-double pitchSet, pitchIn, pitchOut;
+double rsp, rip, rop;
+double rsn, rin, ron;
+double psp, pip, pop;
+double psn, pin, pon;
 
 //Specify the links and initial tuning parameters
-PID roll(&rollIn, &rollOut, &rollSet, 2, 5, 1, DIRECT);
-PID pitch(&pitchIn, &pitchOut, &pitchSet, 2, 5, 1, DIRECT);
-
-Servo sfr;
-Servo sfl;
-Servo sbr;
-Servo sbl;
+PID rp(&rip, &rop, &rsp, 2, 5, 1, DIRECT);
+PID rn(&rin, &ron, &rsn, 2, 5, 1, DIRECT);
+PID pp(&pip, &pop, &psp, 2, 5, 1, DIRECT);
+PID pn(&pin, &pon, &psn, 2, 5, 1, DIRECT);
 
 void setup() {
-  sfr.attach(2);
-  sfl.attach(3);
-  sbr.attach(4);
-  sbl.attach(5);
 
   Serial.begin(115200);
   Wire.begin();
@@ -45,48 +40,25 @@ void setup() {
   my3IMU.init();
   delay(5);
 
-  //initialize the variables we're linked to
-  rollIn = 0;
-  rollSet = 0;  
-  pitchIn = 0;
-  pitchOut = 0;
-
   //turn the PID on
-  roll.SetMode(AUTOMATIC);
-  pitch.SetMode(AUTOMATIC);
-
-  sfr.writeMicroseconds(1000);
-  sfl.writeMicroseconds(1000);
-  sbr.writeMicroseconds(1000);
-  sbl.writeMicroseconds(1000);
-
-  //delay(15000);
-
-  sfr.writeMicroseconds(1100);
-  sfl.writeMicroseconds(1100);
-  sbr.writeMicroseconds(1100);
-  sbl.writeMicroseconds(1100);
-
-  //delay(5000);
-
-  sfr.writeMicroseconds(1000);
-  sfl.writeMicroseconds(1000);
-  sbr.writeMicroseconds(1000);
-  sbl.writeMicroseconds(1000);
+  rp.SetMode(AUTOMATIC);
+  rn.SetMode(AUTOMATIC);
+  pp.SetMode(AUTOMATIC);
+  pn.SetMode(AUTOMATIC);
 }
 
 void loop() { 
   my3IMU.getQ(q);
 
-  rollIn = q[1];
-  pitchIn = q[2];
-  roll.Compute();
-  pitch.Compute();
-  Serial.print(rollIn);
-  Serial.print(" ");
-  Serial.println(rollOut);
+  rip = q[1];
+  rin = -q[1];
+  pip = q[2];
+  pin = -q[2];
 
-
-
+  rp.Compute();
+  rn.Compute();
+  pp.Compute();
+  pn.Compute();
+  
   delay(60);
 }
