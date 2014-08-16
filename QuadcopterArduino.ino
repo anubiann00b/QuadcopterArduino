@@ -59,12 +59,24 @@ void setup() {
   pp.SetMode(AUTOMATIC);
   pn.SetMode(AUTOMATIC);
 
+  Serial.println("HI!");
+
   setup_motor();
+  Serial.println("HI!");
+
+  sfr.writeMicroseconds(1100);
+  sfl.writeMicroseconds(1100);
+  sbr.writeMicroseconds(1100);
+  sbl.writeMicroseconds(1100);
+  delay(5000);
+  Serial.println("HI!");
 }
 
 void loop() { 
   pid();
 
+  Serial.println(1225 -  (pop-pon + rop-ron)*25 + " " + 1225 -  (pop-pon - rop-ron)*25
+    + " " + 1225 - (-pop+pon + rop-ron)*25 + " " + 1225 - (-pop+pon - rop-ron)*25);
   sfr.writeMicroseconds(1225 -  (pop-pon + rop-ron)*25);
   sfl.writeMicroseconds(1225 -  (pop-pon - rop-ron)*25);
   sbr.writeMicroseconds(1225 - (-pop+pon + rop-ron)*25);
