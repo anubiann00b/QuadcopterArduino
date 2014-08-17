@@ -21,10 +21,10 @@ double psp, pip, pop;
 double psn, pin, pon;
 
 //Specify the links and initial tuning parameters
-PID rp(&rip, &rop, &rsp, 2, 5, 1, DIRECT);
-PID rn(&rin, &ron, &rsn, 2, 5, 1, DIRECT);
-PID pp(&pip, &pop, &psp, 2, 5, 1, DIRECT);
-PID pn(&pin, &pon, &psn, 2, 5, 1, DIRECT);
+PID rp(&rip, &rop, &rsp, 10, 25, 5, DIRECT);
+PID rn(&rin, &ron, &rsn, 10, 25, 5, DIRECT);
+PID pp(&pip, &pop, &psp, 10, 25, 5, DIRECT);
+PID pn(&pin, &pon, &psn, 10, 25, 5, DIRECT);
 
 Servo sfr;
 Servo sfl;
@@ -54,7 +54,12 @@ void setup() {
   pp.SetMode(AUTOMATIC);
   pn.SetMode(AUTOMATIC);
 
-  //setup_motor();
+  rp.SetOutputLimits(0, 2000);
+  rn.SetOutputLimits(0, 2000);
+  pp.SetOutputLimits(0, 2000);
+  pn.SetOutputLimits(0, 2000);
+  
+  setup_motor();
 }
 
 void loop() { 
@@ -62,10 +67,10 @@ void loop() {
 
   //print((1225-(pop-pon + rop-ron)*25),1225-(pop-pon - rop-ron)*25,1225-(-pop+pon + rop-ron)*25,1225-(-pop+pon - rop-ron)*25);
 
-  sfr.writeMicroseconds(1225 -  (pop-pon + rop-ron)*25);
-  sfl.writeMicroseconds(1225 -  (pop-pon - rop-ron)*25);
-  sbr.writeMicroseconds(1225 - (-pop+pon + rop-ron)*25);
-  sbl.writeMicroseconds(1225 - (-pop+pon - rop-ron)*25);
+  sfr.writeMicroseconds(1200 + q[1]>0?pop+rop:pon+ron);
+  //sfl.writeMicroseconds(1225 -  (pop-pon - rop-ron)*25);
+  //sbr.writeMicroseconds(1225 - (-pop+pon + rop-ron)*25);
+  //sbl.writeMicroseconds(1225 - (-pop+pon - rop-ron)*25);
 
   delay(60);
 }
@@ -75,7 +80,7 @@ void setup_motor() {
   sfl.writeMicroseconds(1000);
   sbr.writeMicroseconds(1000);
   sbl.writeMicroseconds(1000);
-  delay(15000);
+  delay(10000);
 }
 
 void pid() {
@@ -92,6 +97,12 @@ void pid() {
   pn.Compute();
 
   print(rop, ron, pop, pon);
+}
+
+void print(double d1, double d2) {
+  Serial.print(d1);
+  Serial.print(" ");
+  Serial.println(d2);
 }
 
 void print(double d1, double d2, double d3, double d4) {
