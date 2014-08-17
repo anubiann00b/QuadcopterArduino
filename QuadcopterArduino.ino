@@ -5,11 +5,6 @@
 #include <FIMU_ADXL345.h>
 #include <FIMU_ITG3200.h>
 
-#define DEBUG
-#ifdef DEBUG
-#include "DebugUtils.h"
-#endif
-
 #include "CommunicationUtils.h"
 #include "FreeSixIMU.h"
 #include <Wire.h>
@@ -59,24 +54,14 @@ void setup() {
   pp.SetMode(AUTOMATIC);
   pn.SetMode(AUTOMATIC);
 
-  Serial.println("HI!");
-
-  setup_motor();
-  Serial.println("HI!");
-
-  sfr.writeMicroseconds(1100);
-  sfl.writeMicroseconds(1100);
-  sbr.writeMicroseconds(1100);
-  sbl.writeMicroseconds(1100);
-  delay(5000);
-  Serial.println("HI!");
+  //setup_motor();
 }
 
 void loop() { 
   pid();
 
-  Serial.println(1225 -  (pop-pon + rop-ron)*25 + " " + 1225 -  (pop-pon - rop-ron)*25
-    + " " + 1225 - (-pop+pon + rop-ron)*25 + " " + 1225 - (-pop+pon - rop-ron)*25);
+  //print((1225-(pop-pon + rop-ron)*25),1225-(pop-pon - rop-ron)*25,1225-(-pop+pon + rop-ron)*25,1225-(-pop+pon - rop-ron)*25);
+
   sfr.writeMicroseconds(1225 -  (pop-pon + rop-ron)*25);
   sfl.writeMicroseconds(1225 -  (pop-pon - rop-ron)*25);
   sbr.writeMicroseconds(1225 - (-pop+pon + rop-ron)*25);
@@ -105,4 +90,13 @@ void pid() {
   rn.Compute();
   pp.Compute();
   pn.Compute();
+
+  print(rop, ron, pop, pon);
+}
+
+void print(double d1, double d2, double d3, double d4) {
+  Serial.print(d1); Serial.print(" ");
+  Serial.print(d2); Serial.print(" ");
+  Serial.print(d3); Serial.print(" ");
+  Serial.println(d4);
 }
