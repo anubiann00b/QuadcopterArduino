@@ -18,10 +18,10 @@ double rsn, rin, ron;
 double psp, pip, pop;
 double psn, pin, pon;
 
-PID rp(&rip, &rop, &rsp, 20, 50, 10, DIRECT);
-PID rn(&rin, &ron, &rsn, 20, 50, 10, DIRECT);
-PID pp(&pip, &pop, &psp, 20, 50, 10, DIRECT);
-PID pn(&pin, &pon, &psn, 20, 50, 10, DIRECT);
+PID rp(&rip, &rop, &rsp, 100, 0, 0, DIRECT);
+PID rn(&rin, &ron, &rsn, 100, 0, 0, DIRECT);
+PID pp(&pip, &pop, &psp, 100, 0, 0, DIRECT);
+PID pn(&pin, &pon, &psn, 100, 0, 0, DIRECT);
 
 Servo sfr;
 Servo sfl;
@@ -67,13 +67,12 @@ void setup() {
 void loop() { 
   pid();
 
-  print(1200 + (q[1]>0?rop:ron) + (q[2]>0?pop:pon), 1200 + (q[1]>0?ron:rop) + (q[2]>0?pop:pon),
-    1200 + (q[1]>0?rop:ron) + (q[2]>0?pon:pop), 1200 + (q[1]>0?ron:rop) + (q[2]>0?pon:pop));
+  //print(1200+rop+pop, 1200+ron+pop, 1200+rop+pon, 1200+ron+pon);
 
-  sfr.writeMicroseconds(1200 + (q[1]>0?rop:ron) + (q[2]>0?pop:pon));
-  sfl.writeMicroseconds(1200 + (q[1]>0?ron:rop) + (q[2]>0?pop:pon));
-  sbr.writeMicroseconds(1200 + (q[1]>0?rop:ron) + (q[2]>0?pon:pop));
-  sbl.writeMicroseconds(1200 + (q[1]>0?ron:rop) + (q[2]>0?pon:pop));
+  sfr.writeMicroseconds(1200 + rop + pop);
+  sfl.writeMicroseconds(1200 + ron + pop);
+  sbr.writeMicroseconds(1200 + rop + pon);
+  sbl.writeMicroseconds(1200 + ron + pon);
 
   delay(60);
 }
@@ -89,10 +88,10 @@ void setup_motor() {
 void pid() {
   my3IMU.getQ(q);
 
-  rip = -q[1];
-  rin = q[1];
-  pip = q[2];
-  pin = -q[2];
+  rip = q[1];
+  rin = -q[1];
+  pip = (q[2]+0.03);
+  pin = -(q[2]+0.03);
 
   rp.Compute();
   rn.Compute();
