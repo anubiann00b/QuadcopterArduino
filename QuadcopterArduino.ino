@@ -18,10 +18,10 @@ double rsn, rin, ron;
 double psp, pip, pop;
 double psn, pin, pon;
 
-PID rp(&rip, &rop, &rsp, 75, 45, 0, DIRECT);
-PID rn(&rin, &ron, &rsn, 75, 45, 0, DIRECT);
-PID pp(&pip, &pop, &psp, 75, 45, 0, DIRECT);
-PID pn(&pin, &pon, &psn, 75, 45, 0, DIRECT);
+PID rp(&rip, &rop, &rsp, 80, 45, 0, DIRECT);
+PID rn(&rin, &ron, &rsn, 80, 45, 0, DIRECT);
+PID pp(&pip, &pop, &psp, 80, 45, 0, DIRECT);
+PID pn(&pin, &pon, &psn, 80, 45, 0, DIRECT);
 
 Servo sfr;
 Servo sfl;
