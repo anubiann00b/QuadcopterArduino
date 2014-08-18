@@ -18,10 +18,10 @@ double rsn, rin, ron;
 double psp, pip, pop;
 double psn, pin, pon;
 
-PID rp(&rip, &rop, &rsp, 2, 5, 1, DIRECT);
-PID rn(&rin, &ron, &rsn, 2, 5, 1, DIRECT);
-PID pp(&pip, &pop, &psp, 2, 5, 1, DIRECT);
-PID pn(&pin, &pon, &psn, 2, 5, 1, DIRECT);
+PID rp(&rip, &rop, &rsp, 20, 50, 10, DIRECT);
+PID rn(&rin, &ron, &rsn, 20, 50, 10, DIRECT);
+PID pp(&pip, &pop, &psp, 20, 50, 10, DIRECT);
+PID pn(&pin, &pon, &psn, 20, 50, 10, DIRECT);
 
 Servo sfr;
 Servo sfl;
@@ -39,10 +39,10 @@ int pbr = 1000;
 int pbl = 1000;
 
 void setup() {
-  sfr.attach(2);
-  sfl.attach(3);
-  sbr.attach(4);
-  sbl.attach(5);
+  sfr.attach(6);
+  sfl.attach(9);
+  sbr.attach(5);
+  sbl.attach(3);
 
   Serial.begin(115200);
   Wire.begin();
@@ -61,18 +61,19 @@ void setup() {
   pp.SetOutputLimits(-50, 50);
   pn.SetOutputLimits(-50, 50);
 
-  //setup_motor();
+  setup_motor();
 }
 
 void loop() { 
   pid();
 
-  //print(1200 + q[1]>0?pop:pon + q[2]>0?rop:ron, 1200 + q[1]>0?pop:pon + q[2]>0?ron:rop);
+  print(1200 + (q[1]>0?rop:ron) + (q[2]>0?pop:pon), 1200 + (q[1]>0?ron:rop) + (q[2]>0?pop:pon),
+    1200 + (q[1]>0?rop:ron) + (q[2]>0?pon:pop), 1200 + (q[1]>0?ron:rop) + (q[2]>0?pon:pop));
 
-  sfr.writeMicroseconds(1200 + q[1]>0?pop:pon + q[2]>0?rop:ron);
-  sfl.writeMicroseconds(1200 + q[1]>0?pop:pon + q[2]>0?ron:rop);
-  sbr.writeMicroseconds(1200 + q[1]>0?pon:pop + q[2]>0?rop:ron);
-  sbl.writeMicroseconds(1200 + q[1]>0?pon:pop + q[2]>0?ron:rop);
+  sfr.writeMicroseconds(1200 + (q[1]>0?rop:ron) + (q[2]>0?pop:pon));
+  sfl.writeMicroseconds(1200 + (q[1]>0?ron:rop) + (q[2]>0?pop:pon));
+  sbr.writeMicroseconds(1200 + (q[1]>0?rop:ron) + (q[2]>0?pon:pop));
+  sbl.writeMicroseconds(1200 + (q[1]>0?ron:rop) + (q[2]>0?pon:pop));
 
   delay(60);
 }
@@ -82,14 +83,14 @@ void setup_motor() {
   sfl.writeMicroseconds(1000);
   sbr.writeMicroseconds(1000);
   sbl.writeMicroseconds(1000);
-  delay(10000);
+  delay(15000);
 }
 
 void pid() {
   my3IMU.getQ(q);
 
-  rip = q[1];
-  rin = -q[1];
+  rip = -q[1];
+  rin = q[1];
   pip = q[2];
   pin = -q[2];
 
@@ -97,8 +98,6 @@ void pid() {
   rn.Compute();
   pp.Compute();
   pn.Compute();
-
-  print(rop, ron, pop, pon);
 }
 
 void print(double d1, double d2) {
