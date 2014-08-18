@@ -59,10 +59,10 @@ void setup() {
   pp.SetMode(AUTOMATIC);
   pn.SetMode(AUTOMATIC);
 
-  rp.SetOutputLimits(-100, 100);
-  rn.SetOutputLimits(-100, 100);
-  pp.SetOutputLimits(-100, 100);
-  pn.SetOutputLimits(-100, 100);
+  rp.SetOutputLimits(-50, 50);
+  rn.SetOutputLimits(-50, 50);
+  pp.SetOutputLimits(-50, 50);
+  pn.SetOutputLimits(-50, 50);
   
   //setup_motor();
 }
@@ -70,12 +70,10 @@ void setup() {
 void loop() { 
   pid();
 
-  //print((1225-(pop-pon + rop-ron)*25),1225-(pop-pon - rop-ron)*25,1225-(-pop+pon + rop-ron)*25,1225-(-pop+pon - rop-ron)*25);
-
-  //sfr.writeMicroseconds(1200 + q[1]>0?pop+rop:pon+ron);
-  //sfl.writeMicroseconds(1225 -  (pop-pon - rop-ron)*25);
-  //sbr.writeMicroseconds(1225 - (-pop+pon + rop-ron)*25);
-  //sbl.writeMicroseconds(1225 - (-pop+pon - rop-ron)*25);
+  sfr.writeMicroseconds(1200 + q[1]>0?pop+rop:pon+ron);
+  sfl.writeMicroseconds(1200 + q[1]>0?pop+ron:pon+rop);
+  sbr.writeMicroseconds(1200 + q[1]>0?pon+rop:pop+ron);
+  sbl.writeMicroseconds(1200 + q[1]>0?pon+ron:pop+rop);
 
   delay(60);
 }
