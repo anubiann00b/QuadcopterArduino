@@ -31,6 +31,11 @@ Servo sfl;
 Servo sbr;
 Servo sbl;
 
+double fr = 1200;
+double fl = 1200;
+double br = 1200;
+double bl = 1200;
+
 int pfr = 1000;
 int pfl = 1000;
 int pbr = 1000;
@@ -54,12 +59,12 @@ void setup() {
   pp.SetMode(AUTOMATIC);
   pn.SetMode(AUTOMATIC);
 
-  rp.SetOutputLimits(0, 2000);
-  rn.SetOutputLimits(0, 2000);
-  pp.SetOutputLimits(0, 2000);
-  pn.SetOutputLimits(0, 2000);
+  rp.SetOutputLimits(-100, 100);
+  rn.SetOutputLimits(-100, 100);
+  pp.SetOutputLimits(-100, 100);
+  pn.SetOutputLimits(-100, 100);
   
-  setup_motor();
+  //setup_motor();
 }
 
 void loop() { 
@@ -67,7 +72,7 @@ void loop() {
 
   //print((1225-(pop-pon + rop-ron)*25),1225-(pop-pon - rop-ron)*25,1225-(-pop+pon + rop-ron)*25,1225-(-pop+pon - rop-ron)*25);
 
-  sfr.writeMicroseconds(1200 + q[1]>0?pop+rop:pon+ron);
+  //sfr.writeMicroseconds(1200 + q[1]>0?pop+rop:pon+ron);
   //sfl.writeMicroseconds(1225 -  (pop-pon - rop-ron)*25);
   //sbr.writeMicroseconds(1225 - (-pop+pon + rop-ron)*25);
   //sbl.writeMicroseconds(1225 - (-pop+pon - rop-ron)*25);
