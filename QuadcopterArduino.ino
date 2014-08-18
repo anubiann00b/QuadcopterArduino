@@ -18,10 +18,10 @@ double rsn, rin, ron;
 double psp, pip, pop;
 double psn, pin, pon;
 
-PID rp(&rip, &rop, &rsp, 10, 25, 5, DIRECT);
-PID rn(&rin, &ron, &rsn, 10, 25, 5, DIRECT);
-PID pp(&pip, &pop, &psp, 10, 25, 5, DIRECT);
-PID pn(&pin, &pon, &psn, 10, 25, 5, DIRECT);
+PID rp(&rip, &rop, &rsp, 2, 5, 1, DIRECT);
+PID rn(&rin, &ron, &rsn, 2, 5, 1, DIRECT);
+PID pp(&pip, &pop, &psp, 2, 5, 1, DIRECT);
+PID pn(&pin, &pon, &psn, 2, 5, 1, DIRECT);
 
 Servo sfr;
 Servo sfl;
@@ -60,12 +60,14 @@ void setup() {
   rn.SetOutputLimits(-50, 50);
   pp.SetOutputLimits(-50, 50);
   pn.SetOutputLimits(-50, 50);
-  
+
   //setup_motor();
 }
 
 void loop() { 
   pid();
+
+  //print(1200 + q[1]>0?pop:pon + q[2]>0?rop:ron, 1200 + q[1]>0?pop:pon + q[2]>0?ron:rop);
 
   sfr.writeMicroseconds(1200 + q[1]>0?pop:pon + q[2]>0?rop:ron);
   sfl.writeMicroseconds(1200 + q[1]>0?pop:pon + q[2]>0?ron:rop);
