@@ -9,18 +9,15 @@
 #include "FreeSixIMU.h"
 #include <Wire.h>
 
-float q[4]; //hold q values
+float q[4];
 
-// Set the FreeIMU object
 FreeSixIMU my3IMU = FreeSixIMU();
 
-//Define Variables we'll be connecting to
 double rsp, rip, rop;
 double rsn, rin, ron;
 double psp, pip, pop;
 double psn, pin, pon;
 
-//Specify the links and initial tuning parameters
 PID rp(&rip, &rop, &rsp, 10, 25, 5, DIRECT);
 PID rn(&rin, &ron, &rsn, 10, 25, 5, DIRECT);
 PID pp(&pip, &pop, &psp, 10, 25, 5, DIRECT);
