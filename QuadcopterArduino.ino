@@ -18,10 +18,10 @@ double rsn, rin, ron;
 double psp, pip, pop;
 double psn, pin, pon;
 
-PID rp(&rip, &rop, &rsp, 50, 100, 0, DIRECT);
-PID rn(&rin, &ron, &rsn, 50, 100, 0, DIRECT);
-PID pp(&pip, &pop, &psp, 50, 100, 0, DIRECT);
-PID pn(&pin, &pon, &psn, 50, 100, 0, DIRECT);
+PID rp(&rip, &rop, &rsp, 75, 45, 0, DIRECT);
+PID rn(&rin, &ron, &rsn, 75, 45, 0, DIRECT);
+PID pp(&pip, &pop, &psp, 75, 45, 0, DIRECT);
+PID pn(&pin, &pon, &psn, 75, 45, 0, DIRECT);
 
 Servo sfr;
 Servo sfl;
@@ -69,10 +69,10 @@ void loop() {
 
   print(1200+rop+pop, 1200+ron+pop, 1200+rop+pon, 1200+ron+pon);
 
-  sfr.writeMicroseconds(1250 + rop + pop);
-  sfl.writeMicroseconds(1250 + ron + pop);
-  sbr.writeMicroseconds(1250 + rop + pon);
-  sbl.writeMicroseconds(1250 + ron + pon);
+  sfr.writeMicroseconds(1200 + rop + pop);
+  sfl.writeMicroseconds(1200 + ron + pop);
+  sbr.writeMicroseconds(1200 + rop + pon);
+  sbl.writeMicroseconds(1200 + ron + pon);
 
   delay(60);
 }
