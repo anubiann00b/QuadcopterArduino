@@ -70,10 +70,10 @@ void setup() {
 void loop() { 
   pid();
 
-  sfr.writeMicroseconds(1200 + q[1]>0?pop+rop:pon+ron);
-  sfl.writeMicroseconds(1200 + q[1]>0?pop+ron:pon+rop);
-  sbr.writeMicroseconds(1200 + q[1]>0?pon+rop:pop+ron);
-  sbl.writeMicroseconds(1200 + q[1]>0?pon+ron:pop+rop);
+  sfr.writeMicroseconds(1200 + q[1]>0?pop:pon + q[2]>0?rop:ron);
+  sfl.writeMicroseconds(1200 + q[1]>0?pop:pon + q[2]>0?ron:rop);
+  sbr.writeMicroseconds(1200 + q[1]>0?pon:pop + q[2]>0?rop:ron);
+  sbl.writeMicroseconds(1200 + q[1]>0?pon:pop + q[2]>0?ron:rop);
 
   delay(60);
 }
