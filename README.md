@@ -1,8 +1,4 @@
 QuadcopterArduino
 =================
 
-Our second Propeller board decided it would stop working... Now we have to rewrite everything in Arduino.
-
-UPDATE: We broke our first Arduino too, now we have to redo everything on the day of presentations.
-
-Everything that could possibly go wrong went wrong.
+The quadcopter was built at [StudentRND Labs](http://labs.studentrnd.org/). The original code is [here](https://github.com/anubiann00b/Quadcopter), written in Propeller C. We broke all of our propeller boards though, so now we're using an Arduino Uno.
