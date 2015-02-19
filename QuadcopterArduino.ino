@@ -35,7 +35,7 @@ void setup() {
   frontLeft.writeMicroseconds(1000);
   backRight.writeMicroseconds(1000);
   backLeft.writeMicroseconds(1000);
-  delay(3000);
+  delay(10000);
 
   Serial.println("Initialized");
 }
@@ -46,30 +46,33 @@ double errSumRoll = 0;
 double lastInputPitch = 0;
 double errSumPitch = 0;
 
-void loop() { 
+void loop() {
   my3IMU.getQ(q);
 
   double rollInput = q[1];
   double pitchInput = q[2];
 
-  print(computePid(rollInput, 0, &errSumRoll, &lastInputRoll), computePid(pitchInput, 0, &errSumPitch, &lastInputPitch));
+  double rollOutput = computePid(rollInput, 0, &errSumRoll, &lastInputRoll);
+  double pitchOutput = computePid(pitchInput, 0, &errSumPitch, &lastInputPitch);
 
-  //frontRight.writeMicroseconds(1200 + rollOutput + pitchOutput);
-  //frontLeft.writeMicroseconds(1200 - rollOutput + pitchOutput);
-  //backRight.writeMicroseconds(1200 + rollOutput - pitchOutput);
-  //backLeft.writeMicroseconds(1200 - rollOutput - pitchOutput);
+  print(rollOutput, pitchOutput);
+
+  frontRight.writeMicroseconds(1125 + 50*(rollOutput + pitchOutput));
+  frontLeft.writeMicroseconds(1125 + 50*(-rollOutput + pitchOutput));
+  backRight.writeMicroseconds(1125 + 50*(rollOutput - pitchOutput));
+  backLeft.writeMicroseconds(1125 + 50*(-rollOutput - pitchOutput));
 
   delay(60);
 }
 
 double computePid(double input, double setpoint, double *errSum, double *lastInput) {
-    double error = setpoint - input;
-    double dIn = *lastInput - input;
-    *errSum += error;
+  double error = setpoint - input;
+  double dIn = *lastInput - input;
+  *errSum += error;
 
-    *lastInput = input;
+  *lastInput = input;
 
-    return kp*error + ki*(*errSum) + kd*dIn;
+  return kp*error + ki*(*errSum) + kd*dIn;
 }
 
 void print(double d1, double d2) {
